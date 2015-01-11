@@ -3,29 +3,17 @@
  * Demo for register account api
  =========================================================*/
 
-App.controller('RegisterFormController', ['$scope', '$http', '$state', function($scope, $http, $state) {
-
-  // bind here all data from the form
-  $scope.account = {};
-  // place the message if something goes wrong
-  $scope.authMsg = '';
-    
-  $scope.register = function() {
-    $scope.authMsg = '';
-
-    $http
-      .post('api/account/register', {email: $scope.account.email, password: $scope.account.password})
-      .then(function(response) {
-        // assumes if ok, response is an object with some data, if not, a string with error
-        // customize according to your api
-        if ( !response.account ) {
-          $scope.authMsg = response;
-        }else{
-          $state.go('app.dashboard');
-        }
-      }, function(x) {
-        $scope.authMsg = 'Server Request Error';
-      });
+App.controller('RegisterFormController', ['$scope', '$state', '$auth', function($scope, $state, $auth) {
+  $scope.$on('auth:registration-email-error', function(ev, reason) {
+      $scope.errors = reason.errors.full_messages;
+  });
+  $scope.handleRegBtnClick = function() {
+      $auth.submitRegistration($scope.registrationForm)
+          .then(function() {
+              $auth.submitLogin({
+                  email: $scope.registrationForm.email,
+                  password: $scope.registrationForm.password
+              });
+          });
   };
-
 }]);

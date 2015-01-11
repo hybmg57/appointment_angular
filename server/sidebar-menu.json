@@ -11,6 +11,11 @@
     "translate": "sidebar.nav.DASHBOARD"
   },
   {
+    "text": "Schedule",
+    "sref": "app.schedule",
+    "icon": "icon-clock"
+  },
+  {
     "text": "Widgets",
     "sref": "app.widgets",
     "icon": "icon-grid",

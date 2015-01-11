@@ -2,6 +2,9 @@
   "dashboard": {
     "WELCOME": "Welcome to {{appName}}"
   },
+  "schedule": {
+    "WELCOME": "Welcome to {{appName}}"
+  },
   "topbar": {
     "messages": {
       "UNREAD": "Unread messages",

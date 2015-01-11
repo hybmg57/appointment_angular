@@ -14,48 +14,88 @@ if (typeof $ === 'undefined') { throw new Error('This application\'s JavaScript 
 // APP START
 // ----------------------------------- 
 
-var App = angular.module('angle', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCookies', 'pascalprecht.translate', 'ui.bootstrap', 'ui.router', 'oc.lazyLoad', 'cfp.loadingBar', 'ngSanitize', 'ngResource'])
-          .run(["$rootScope", "$state", "$stateParams",  '$window', '$templateCache', function ($rootScope, $state, $stateParams, $window, $templateCache) {
-              // Set reference to access them from any scope
-              $rootScope.$state = $state;
-              $rootScope.$stateParams = $stateParams;
-              $rootScope.$storage = $window.localStorage;
+var AppInit = angular.module('appointment', [
+    'ngRoute',
+    'ngAnimate',
+    'ngStorage',
+    'ngCookies',
+    'pascalprecht.translate',
+    'ui.bootstrap',
+    'ui.router',
+    'oc.lazyLoad',
+    'cfp.loadingBar',
+    'ngSanitize',
+    'ngResource',
+    'ng-token-auth'
+]);
 
-              // Uncomment this to disables template cache
-              /*$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-                  if (typeof(toState) !== 'undefined'){
-                    $templateCache.remove(toState.templateUrl);
-                  }
-              });*/
+AppInit.config(function($authProvider){
+  $authProvider.configure({
+     apiUrl: '/api'
+  });
+});
 
-              // Scope Globals
-              // ----------------------------------- 
-              $rootScope.app = {
-                name: 'Appointment Reminder',
-                description: 'Phone, Text and Email reminders',
-                year: ((new Date()).getFullYear()),
-                layout: {
-                  isFixed: true,
-                  isCollapsed: false,
-                  isBoxed: false,
-                  isRTL: false
-                },
-                viewAnimation: 'ng-fadeInUp'
-              };
-              $rootScope.user = {
-                name:     'Jae',
-                job:      'Developer',
-                picture:  'app/img/user/02.jpg'
-              };
-            }
-          ]);
+
+var App = AppInit.run(["$rootScope", "$state", "$stateParams",  '$window', '$templateCache', function ($rootScope, $state, $stateParams, $window, $templateCache) {
+          // Set reference to access them from any scope
+          $rootScope.$state = $state;
+          $rootScope.$stateParams = $stateParams;
+          $rootScope.$storage = $window.localStorage;
+
+          // Uncomment this to disables template cache
+          /*$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+              if (typeof(toState) !== 'undefined'){
+                $templateCache.remove(toState.templateUrl);
+              }
+          });*/
+
+          $rootScope.$on('auth:login-success', function(){
+              console.log('Login success');
+              $state.go('app.dashboard');
+          });
+
+          // Scope Globals
+          // -----------------------------------
+          $rootScope.app = {
+            name: 'Appointment Reminder',
+            description: 'Phone, Text and Email reminders',
+            year: ((new Date()).getFullYear()),
+            layout: {
+              isFixed: true,
+              isCollapsed: false,
+              isBoxed: false,
+              isRTL: false
+            },
+            viewAnimation: 'ng-fadeInUp'
+          };
+          $rootScope.user = {
+            name:     'Jae',
+            job:      'Developer',
+            picture:  'app/img/user/02.jpg'
+          };
+        }
+      ]);
+
 
 /**=========================================================
  * Module: config.js
  * App routes and resources configuration
  =========================================================*/
+//App.config(['ng-token-auth'], function($authProvider){
+//  $authProvider.configure({
+//      apiUrl: '/api'
+//  });
+//});
 
-App.config(['$stateProvider','$urlRouterProvider', '$controllerProvider', '$compileProvider', '$filterProvider', '$provide', '$ocLazyLoadProvider', 'APP_REQUIRES',
+App.config([
+    '$stateProvider',
+    '$urlRouterProvider',
+    '$controllerProvider',
+    '$compileProvider',
+    '$filterProvider',
+    '$provide',
+    '$ocLazyLoadProvider',
+    'APP_REQUIRES',
 function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvider, $filterProvider, $provide, $ocLazyLoadProvider, appRequires) {
   'use strict';
 
@@ -94,6 +134,12 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
     .state('app.dashboard', {
         url: '/dashboard',
         title: 'Dashboard',
+        templateUrl: basepath('dashboard.html'),
+        resolve: resolveFor('flot-chart','flot-chart-plugins')
+    })
+    .state('app.schedule', {
+        url: '/schedule',
+        title: 'Schedule',
         templateUrl: basepath('dashboard.html'),
         resolve: resolveFor('flot-chart','flot-chart-plugins')
     })
@@ -404,7 +450,8 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
     .state('page.login', {
         url: '/login',
         title: "Login",
-        templateUrl: 'app/pages/login.html'
+        templateUrl: 'app/pages/login.html',
+        resolve: resolveFor('ng-token-auth')
     })
     .state('page.register', {
         url: '/register',
@@ -424,7 +471,12 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
     .state('page.404', {
         url: '/404',
         title: "Not Found",
-        templateUrl: 'app/pages/404.html'
+        templateUrl: 'app/pages/404.html',
+        resolve: {
+            auth: ['$auth', function($auth){
+                return $auth.validateUser();
+            }]
+        }
     })
     // 
     // CUSTOM RESOLVES
@@ -507,8 +559,9 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
     cfpLoadingBarProvider.includeSpinner = false;
     cfpLoadingBarProvider.latencyThreshold = 500;
     cfpLoadingBarProvider.parentSelector = '.wrapper > section';
-  }])
+}])
 .controller('NullController', function() {});
+
 
 /**=========================================================
  * Module: constants.js
@@ -609,6 +662,8 @@ App
                                           'vendor/ngDialog/css/ngDialog.min.css',
                                           'vendor/ngDialog/css/ngDialog-theme-default.min.css'] },
       { name: 'ngWig',            files: ['vendor/ngWig/dist/ng-wig.min.js'] },
+      { name: 'angular-cookie',   files: ['vendor/angular-cookie/angular-cookie.min.js'] },
+      { name: 'ng-token-auth',    files: ['vendor/ng-token-auth/dist/ng-token-auth.min.js'] }
     ]
 
 
@@ -656,62 +711,57 @@ App
  =========================================================*/
 
 App.controller('LoginFormController', ['$scope', '$http', '$state', function($scope, $http, $state) {
+  $scope.$on('auth:login-error', function(ev, reason){
+    console.log('Login error');
+    $scope.errors = reason.errors.full_messages;
+  });
 
   // bind here all data from the form
-  $scope.account = {};
+  //$scope.account = {};
   // place the message if something goes wrong
-  $scope.authMsg = '';
+  //$scope.authMsg = '';
 
-  $scope.login = function() {
-    $scope.authMsg = '';
-
-    $http
-      .post('api/account/login', {email: $scope.account.email, password: $scope.account.password})
-      .then(function(response) {
-        // assumes if ok, response is an object with some data, if not, a string with error
-        // customize according to your api
-        if ( !response.account ) {
-          $scope.authMsg = 'Incorrect credentials.';
-        }else{
-          $state.go('app.dashboard');
-        }
-      }, function(x) {
-        $scope.authMsg = 'Server Request Error';
-      });
-  };
+  //$scope.login = function() {
+  //  $scope.authMsg = '';
+  //
+  //  $http
+  //    .post('api/auth/sign_in', {email: $scope.account.email, password: $scope.account.password})
+  //    .then(function(response) {
+  //      // assumes if ok, response is an object with some data, if not, a string with error
+  //      // customize according to your api
+  //
+  //      if ( !response.account ) {
+  //        console.log(response)
+  //        $scope.authMsg = 'Incorrect credentials.';
+  //      }else{
+  //        $state.go('app.dashboard');
+  //      }
+  //    }, function(x) {
+  //      $scope.authMsg = x.data.errors[0];
+  //    });
+  //};
 
 }]);
+
 
 /**=========================================================
  * Module: access-register.js
  * Demo for register account api
  =========================================================*/
 
-App.controller('RegisterFormController', ['$scope', '$http', '$state', function($scope, $http, $state) {
-
-  // bind here all data from the form
-  $scope.account = {};
-  // place the message if something goes wrong
-  $scope.authMsg = '';
-    
-  $scope.register = function() {
-    $scope.authMsg = '';
-
-    $http
-      .post('api/account/register', {email: $scope.account.email, password: $scope.account.password})
-      .then(function(response) {
-        // assumes if ok, response is an object with some data, if not, a string with error
-        // customize according to your api
-        if ( !response.account ) {
-          $scope.authMsg = response;
-        }else{
-          $state.go('app.dashboard');
-        }
-      }, function(x) {
-        $scope.authMsg = 'Server Request Error';
-      });
+App.controller('RegisterFormController', ['$scope', '$state', '$auth', function($scope, $state, $auth) {
+  $scope.$on('auth:registration-email-error', function(ev, reason) {
+      $scope.errors = reason.errors.full_messages;
+  });
+  $scope.handleRegBtnClick = function() {
+      $auth.submitRegistration($scope.registrationForm)
+          .then(function() {
+              $auth.submitLogin({
+                  email: $scope.registrationForm.email,
+                  password: $scope.registrationForm.password
+              });
+          });
   };
-
 }]);
 
 /**=========================================================

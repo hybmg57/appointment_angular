@@ -19,6 +19,7 @@ var gulp        = require('gulp'),
     gulpFilter  = require('gulp-filter'),
     expect      = require('gulp-expect-file'),
     gulpsync    = require('gulp-sync')(gulp),
+    connect     = require('gulp-connect'),
     PluginError = gutil.PluginError;
 
 // LiveReload port. Change it only if there's a conflict
@@ -105,7 +106,7 @@ var source = {
     main: 'less/bootstrap/bootstrap.less',
     dir:  'less/bootstrap',
     watch: ['less/bootstrap/*.less']
-  }
+  },
 };
 
 // BUILD TARGET CONFIG 
@@ -276,6 +277,24 @@ gulp.task('templates:views', function() {
         ;
 });
 
+// Middleware proxy pass to Rails
+gulp.task('connect', function(){
+    connect.server({
+        root: '../',
+        port: 8080,
+        livereload: true,
+        middleware: function(connect, o) {
+            return [ (function() {
+                var url = require('url');
+                var proxy = require('proxy-middleware');
+                var options = url.parse('http://localhost:3000/api');
+                options.route = '/api';
+                return proxy(options);
+            })()]
+        }
+    });
+});
+
 //---------------
 // WATCH
 //---------------
@@ -313,7 +332,8 @@ gulp.task('start',[
           'templates:app',
           'templates:pages',
           'templates:views',
-          'watch'
+          'watch',
+          'connect'
         ]);
 
 gulp.task('default', gulpsync.sync([

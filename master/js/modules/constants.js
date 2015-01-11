@@ -97,6 +97,8 @@ App
                                           'vendor/ngDialog/css/ngDialog.min.css',
                                           'vendor/ngDialog/css/ngDialog-theme-default.min.css'] },
       { name: 'ngWig',            files: ['vendor/ngWig/dist/ng-wig.min.js'] },
+      { name: 'angular-cookie',   files: ['vendor/angular-cookie/angular-cookie.min.js'] },
+      { name: 'ng-token-auth',    files: ['vendor/ng-token-auth/dist/ng-token-auth.min.js'] }
     ]
 
 

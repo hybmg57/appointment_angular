@@ -6,12 +6,12 @@
         img.block-center.img-rounded(src='app/img/logo.png', alt='Image')
     .panel-body
       p.text-center.pv SIGN IN TO CONTINUE.
-      form(role='form', ng-submit="login()", validate-form='', novalidate='').mb-lg
+      form(role='form', ng-submit="submitLogin(loginForm)", ng-init='loginForm = {}' validate-form='', novalidate='').mb-lg
         .form-group.has-feedback
-          input#exampleInputEmail1.form-control(type='email', placeholder='Enter email', autocomplete="off", ng-model="account.email", required)
+          input#email.form-control(type='email', name='email', placeholder='Enter email', autocomplete="off", ng-model="loginForm.email", required)
           span.fa.fa-envelope.form-control-feedback.text-muted
         .form-group.has-feedback
-          input#exampleInputPassword1.form-control(type='password', placeholder='Password', ng-model="account.password", required)
+          input#password.form-control(type='password', name='password', placeholder='Password', ng-model="loginForm.password", required)
           span.fa.fa-lock.form-control-feedback.text-muted
         .clearfix
           .checkbox.c-checkbox.pull-left.mt0
@@ -24,7 +24,10 @@
         
         button.btn.btn-block.btn-primary.mt-lg(type='submit') Login
       
-      .alert.alert-danger.text-center(ng-show='authMsg') {{authMsg}}
+      .alert.alert-danger.text-center(ng-show='errors')
+        .ul(ng-repeat="error in errors track by $index")
+          .li {{error}}
+
       p.pt-lg.text-center Need to Signup?
       a(ui-sref="page.register").btn.btn-block.btn-default Register Now
   // END panel

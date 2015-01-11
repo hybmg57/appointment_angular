@@ -2,8 +2,21 @@
  * Module: config.js
  * App routes and resources configuration
  =========================================================*/
+//App.config(['ng-token-auth'], function($authProvider){
+//  $authProvider.configure({
+//      apiUrl: '/api'
+//  });
+//});
 
-App.config(['$stateProvider','$urlRouterProvider', '$controllerProvider', '$compileProvider', '$filterProvider', '$provide', '$ocLazyLoadProvider', 'APP_REQUIRES',
+App.config([
+    '$stateProvider',
+    '$urlRouterProvider',
+    '$controllerProvider',
+    '$compileProvider',
+    '$filterProvider',
+    '$provide',
+    '$ocLazyLoadProvider',
+    'APP_REQUIRES',
 function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvider, $filterProvider, $provide, $ocLazyLoadProvider, appRequires) {
   'use strict';
 
@@ -42,6 +55,12 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
     .state('app.dashboard', {
         url: '/dashboard',
         title: 'Dashboard',
+        templateUrl: basepath('dashboard.html'),
+        resolve: resolveFor('flot-chart','flot-chart-plugins')
+    })
+    .state('app.schedule', {
+        url: '/schedule',
+        title: 'Schedule',
         templateUrl: basepath('dashboard.html'),
         resolve: resolveFor('flot-chart','flot-chart-plugins')
     })
@@ -352,7 +371,8 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
     .state('page.login', {
         url: '/login',
         title: "Login",
-        templateUrl: 'app/pages/login.html'
+        templateUrl: 'app/pages/login.html',
+        resolve: resolveFor('ng-token-auth')
     })
     .state('page.register', {
         url: '/register',
@@ -372,7 +392,12 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
     .state('page.404', {
         url: '/404',
         title: "Not Found",
-        templateUrl: 'app/pages/404.html'
+        templateUrl: 'app/pages/404.html',
+        resolve: {
+            auth: ['$auth', function($auth){
+                return $auth.validateUser();
+            }]
+        }
     })
     // 
     // CUSTOM RESOLVES
@@ -455,5 +480,6 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
     cfpLoadingBarProvider.includeSpinner = false;
     cfpLoadingBarProvider.latencyThreshold = 500;
     cfpLoadingBarProvider.parentSelector = '.wrapper > section';
-  }])
+}])
 .controller('NullController', function() {});
+
