@@ -50,7 +50,13 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         abstract: true,
         templateUrl: basepath('app.html'),
         controller: 'AppController',
-        resolve: resolveFor('fastclick', 'modernizr', 'icons', 'screenfull', 'animo', 'sparklines', 'slimscroll', 'classyloader', 'toaster', 'whirl')
+        resolve: angular.extend(
+            resolveFor('fastclick', 'modernizr', 'icons', 'screenfull', 'animo', 'sparklines', 'slimscroll', 'classyloader', 'toaster', 'whirl'), {
+                auth: function($auth) {
+                    return $auth.validateUser();
+                }
+            }
+        )
     })
     .state('app.dashboard', {
         url: '/dashboard',
@@ -59,10 +65,20 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         resolve: resolveFor('flot-chart','flot-chart-plugins')
     })
     .state('app.schedule', {
-        url: '/schedule',
+      url: '/schedule',
+      title: 'Schedule',
+      templateUrl: basepath('ar-schedule.html'),
+      controller: 'ARScheduleCtrl',
+      resolve: resolveFor('jquery-ui', 'moment', 'fullcalendar', 'ngDialog', 'angular-chosen','inputmask','parsley')
+    })
+
+
+    .state('app.schedulea', {
+        url: '/schedulea',
         title: 'Schedule',
-        templateUrl: basepath('dashboard.html'),
-        resolve: resolveFor('flot-chart','flot-chart-plugins')
+        templateUrl: basepath('calendar.html'),
+        controller: 'NullController',
+        resolve: resolveFor('jquery-ui', 'moment', 'fullcalendar')
     })
     .state('app.widgets', {
         url: '/widgets',
@@ -393,10 +409,10 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         url: '/404',
         title: "Not Found",
         templateUrl: 'app/pages/404.html',
-        resolve: {
-            auth: ['$auth', function($auth){
+        resolveFor: {
+            auth: function($auth) {
                 return $auth.validateUser();
-            }]
+            }
         }
     })
     // 

@@ -6,7 +6,6 @@ var gulp        = require('gulp'),
     path        = require('path'),
     livereload  = require('gulp-livereload'), // Livereload plugin needed: https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei
     marked      = require('marked'), // For :markdown filter in jade
-    path        = require('path'),
     changed     = require('gulp-changed'),
     prettify    = require('gulp-html-prettify'),
     w3cjs       = require('gulp-w3cjs'),

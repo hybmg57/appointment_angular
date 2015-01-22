@@ -1,0 +1,154 @@
+h3 Schedule Client Appointments
+  small Drag and Drop events and tasks
+
+// START row
+.calendar-app(ng-controller="CalendarController")
+  .row
+    .col-lg-9.col-md-8
+      // START panel
+      .panel.panel-default
+        .panel-body
+          // START calendar
+          #calendar
+          // END calendar
+      // END panel
+    .col-lg-3.col-md-4
+      .row
+        .col-md-12.col-sm-6.col-xs-12.co-xs-push-12
+          datepicker.ui-datepicker.well.well-sm(ng-model='dt', min-date='minDate', show-weeks='false' ng-click='datePicked(dt)')
+        .col-md-12.col-sm-6.col-xs-12.co-xs-pull-12
+          // START panel
+          .panel.panel-default
+            .panel-heading
+              h4.panel-title Draggable Events
+            // Default external events list
+            .external-events-trash
+              .panel-body
+                .external-events
+                  .bg-green Lunch
+                  .bg-danger Go home
+                  .bg-info Do homework
+                  .bg-warning Work on UI design
+                  .bg-inverse Sleep tight
+                p
+                  span.checkbox.c-checkbox
+                    label
+                      input#remove-after-drop(type='checkbox')
+                      span.fa.fa-check 
+                      | Remove after Drop
+          // END panel
+        .col-md-12.col-sm-6.col-xs-12.co-xs-push-12
+          // START panel
+          .panel.panel-default
+            .panel-heading
+              h3.panel-title Create Event
+            .panel-body
+              .input-group.mb
+                input.form-control.external-event-name(type='text', placeholder="Event name...")
+                .input-group-btn
+                  button.btn.btn-default.external-event-add-btn(type='button') Add
+              p.text-muted: small Choose a Color
+              ul.list-inline.external-event-color-selector
+                li.p0: a.circle.circle-danger.circle-xl.selected(href='#')
+                li.p0: a.circle.circle-primary.circle-xl(href='#')
+                li.p0: a.circle.circle-info.circle-xl(href='#')
+                li.p0: a.circle.circle-success.circle-xl(href='#')
+                li.p0: a.circle.circle-warning.circle-xl(href='#')
+                li.p0: a.circle.circle-green.circle-xl(href='#')
+                li.p0: a.circle.circle-pink.circle-xl(href='#')
+                li.p0: a.circle.circle-inverse.circle-xl(href='#')
+                li.p0: a.circle.circle-purple.circle-xl(href='#')
+
+          // END panel
+  // END row
+
+
+  script(type="text/ng-template", id="dialogWithNestedConfirmDialogId")
+    .ngdialog-message
+      // START panel
+      .panel.panel-flat
+        .panel-heading
+          .panel-title Add a new appointment
+        .panel-body
+          form.form-horizontal(role='form', name='appointmentForm', ng-submit='submit()', validate-form='', novalidate='').mb-lg
+            .form-group
+              label.col-sm-4.control-label(for='name') Client name
+              .col-sm-8
+                .input-group.m-b
+                  span.input-group-addon
+                    em.icon-user-follow
+                  input#name.form-control(name='name', type='text', required='required')
+            .form-group
+              label.col-sm-4.control-label(for='phone-home') Home phone
+              .col-sm-8
+                .input-group.m-b
+                  span.input-group-addon
+                    em.fa.fa-phone
+                  input.form-control#phone-home(name='phone-home', type='text', masked="", data-inputmask="'mask': '(99) 9999-9999'", placeholder="Phone number")
+            .form-group
+              label.col-sm-4.control-label(for='mobile') Mobile
+              .col-sm-8
+                .input-group.m-b
+                  span.input-group-addon
+                    em.icon-screen-smartphone
+                  input.form-control#mobile(name='mobile', type='text', masked="", data-inputmask="'mask': '(999) 999-9999'", placeholder="Mobile number")
+            .form-group
+              label.col-sm-4.control-label(for='email') Email
+              .col-sm-8
+                .input-group.m-b
+                  span.input-group-addon
+                    em.icon-envelope
+                  input#email.form-control(name='email', type='email', data-parsley-type='email')
+            .form-group
+              label.col-sm-4.control-label(for='reminder-preferences') Reminder preferences
+              .col-sm-8
+                .input-group.m-b
+                  label.checkbox-inline.c-checkbox.c-checkbox-rounded
+                    input#pref-phone(type='checkbox', value='phone', checked='')
+                    span.fa.fa-check
+                    |  Voice Call
+                  label.checkbox-inline.c-checkbox.c-checkbox-rounded
+                    input#pref-text(type='checkbox', value='text', checked='')
+                    span.fa.fa-check
+                    |  Text
+                  label.checkbox-inline.c-checkbox.c-checkbox-rounded
+                    input#pref-email(type='checkbox', value='email', checked='')
+                    span.fa.fa-check
+                    |  Email
+            .form-group
+              label.col-sm-4.control-label(for='script') Script to use
+              .col-sm-8
+                select.chosen-select.input-md#script(chosen='', ng-model='scripts', ng-options='s for s in scripts')
+            .form-group
+              label.col-sm-4.control-label(for='reminder-timing') Reminder timing
+              .col-sm-8
+                select.form-control.m-b(name='reminder-timing')
+                  option Option 1
+                  option Option 2
+                  option Option 3
+                  option Option 4
+            .form-group
+              label.col-sm-4.control-label(for='reminder-timing') Date/Time
+              .col-sm-8
+                p.form-control-static {{ dateTime }}
+            .form-group
+              label.col-sm-4.control-label(for='status') Status
+              .col-sm-8
+                p.form-control-static {{ status }}
+            .form-group
+              label.col-sm-4.control-label(for='recurring') Recurring
+              .col-sm-8
+                p.form-control-static {{ recurring }}
+            //.alert.alert-info
+            //  | Hint: Change the time/duration by dragging the appointment after saving.
+
+            .alert.alert-danger.text-center(ng-show='errors')
+              .ul(ng-repeat="error in errors track by $index")
+                .li {{error}}
+
+            .clearfix
+              .pull-right
+                button.btn.btn-default.mr(type='button', ng-click="closeThisDialog('Cancel')") Cancel
+                button.btn.btn-primary(type='submit') Save
+
+        // END panel

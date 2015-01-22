@@ -16240,6 +16240,14 @@ x:-o-prefocus,
   font-style: italic;
 }
 
+.ngdialog .ngdialog-content {
+  width: 540px !important;
+}
+
+.ngdialog.ngdialog-theme-default {
+  padding-top: 20px !important;
+}
+
 .ngdialog.ngdialog-theme-default .ngdialog-content {
   background-color: #fff !important;
   border-radius: 4px !important;
@@ -19320,4 +19328,8 @@ flatdoc [role~="flatdoc-content"] > h3 {
   padding: 20px;
   border-top: 1px solid #f1f2f3;
   margin: 0 -20px;
+}
+
+.ui-datepicker button {
+  font-size: 11px !important;
 }
