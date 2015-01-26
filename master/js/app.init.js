@@ -50,8 +50,13 @@ var App = AppInit.run(["$rootScope", "$state", "$stateParams",  '$window', '$tem
           });*/
 
           $rootScope.$on('auth:login-success', function(){
-              console.log('Login success');
-              $state.go('app.dashboard');
+            console.log('Login success');
+            $state.go('app.dashboard');
+          });
+
+          $rootScope.$on('auth:invalid', function(){
+            console.log('errror1');
+            $state.go('page.login');
           });
 
           // Scope Globals

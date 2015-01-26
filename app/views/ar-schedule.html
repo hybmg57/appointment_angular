@@ -20,88 +20,11 @@
             <div class="col-md-12 col-sm-6 col-xs-12 co-xs-push-12">
                <datepicker ng-model="dt" min-date="minDate" show-weeks="false" ng-click="datePicked(dt)" class="ui-datepicker well well-sm"></datepicker>
             </div>
-            <div class="col-md-12 col-sm-6 col-xs-12 co-xs-pull-12">
-               <!-- START panel-->
-               <div class="panel panel-default">
-                  <div class="panel-heading">
-                     <h4 class="panel-title">Draggable Events</h4>
-                  </div>
-                  <!-- Default external events list-->
-                  <div class="external-events-trash">
-                     <div class="panel-body">
-                        <div class="external-events">
-                           <div class="bg-green">Lunch</div>
-                           <div class="bg-danger">Go home</div>
-                           <div class="bg-info">Do homework</div>
-                           <div class="bg-warning">Work on UI design</div>
-                           <div class="bg-inverse">Sleep tight</div>
-                        </div>
-                        <p>
-                           <span class="checkbox c-checkbox">
-                              <label>
-                                 <input id="remove-after-drop" type="checkbox" />
-                                 <span class="fa fa-check"></span>Remove after Drop</label>
-                           </span>
-                        </p>
-                     </div>
-                  </div>
-               </div>
-               <!-- END panel-->
-            </div>
-            <div class="col-md-12 col-sm-6 col-xs-12 co-xs-push-12">
-               <!-- START panel-->
-               <div class="panel panel-default">
-                  <div class="panel-heading">
-                     <h3 class="panel-title">Create Event</h3>
-                  </div>
-                  <div class="panel-body">
-                     <div class="input-group mb">
-                        <input type="text" placeholder="Event name..." class="form-control external-event-name" />
-                        <div class="input-group-btn">
-                           <button type="button" class="btn btn-default external-event-add-btn">Add</button>
-                        </div>
-                     </div>
-                     <p class="text-muted">
-                        <small>Choose a Color</small>
-                     </p>
-                     <ul class="list-inline external-event-color-selector">
-                        <li class="p0">
-                           <a href="#" class="circle circle-danger circle-xl selected"></a>
-                        </li>
-                        <li class="p0">
-                           <a href="#" class="circle circle-primary circle-xl"></a>
-                        </li>
-                        <li class="p0">
-                           <a href="#" class="circle circle-info circle-xl"></a>
-                        </li>
-                        <li class="p0">
-                           <a href="#" class="circle circle-success circle-xl"></a>
-                        </li>
-                        <li class="p0">
-                           <a href="#" class="circle circle-warning circle-xl"></a>
-                        </li>
-                        <li class="p0">
-                           <a href="#" class="circle circle-green circle-xl"></a>
-                        </li>
-                        <li class="p0">
-                           <a href="#" class="circle circle-pink circle-xl"></a>
-                        </li>
-                        <li class="p0">
-                           <a href="#" class="circle circle-inverse circle-xl"></a>
-                        </li>
-                        <li class="p0">
-                           <a href="#" class="circle circle-purple circle-xl"></a>
-                        </li>
-                     </ul>
-                  </div>
-               </div>
-               <!-- END panel-->
-            </div>
          </div>
       </div>
    </div>
    <!-- END row-->
    <script type="text/ng-template" id="dialogWithNestedConfirmDialogId">
-      <div class="ngdialog-message"><!-- START panel--><div class="panel panel-flat"><div class="panel-heading"><div class="panel-title">Add a new appointment</div></div><div class="panel-body"><form role="form" name="appointmentForm" ng-submit="submit()" validate-form="" novalidate="" class="form-horizontal mb-lg"><div class="form-group"><label for="name" class="col-sm-4 control-label">Client name</label><div class="col-sm-8"><div class="input-group m-b"><span class="input-group-addon"><em class="icon-user-follow"></em></span><input id="name" name="name" type="text" required="required" class="form-control"/></div></div></div><div class="form-group"><label for="phone-home" class="col-sm-4 control-label">Home phone</label><div class="col-sm-8"><div class="input-group m-b"><span class="input-group-addon"><em class="fa fa-phone"></em></span><input id="phone-home" name="phone-home" type="text" masked="" data-inputmask="'mask': '(99) 9999-9999'" placeholder="Phone number" class="form-control"/></div></div></div><div class="form-group"><label for="mobile" class="col-sm-4 control-label">Mobile</label><div class="col-sm-8"><div class="input-group m-b"><span class="input-group-addon"><em class="icon-screen-smartphone"></em></span><input id="mobile" name="mobile" type="text" masked="" data-inputmask="'mask': '(999) 999-9999'" placeholder="Mobile number" class="form-control"/></div></div></div><div class="form-group"><label for="email" class="col-sm-4 control-label">Email</label><div class="col-sm-8"><div class="input-group m-b"><span class="input-group-addon"><em class="icon-envelope"></em></span><input id="email" name="email" type="email" data-parsley-type="email" class="form-control"/></div></div></div><div class="form-group"><label for="reminder-preferences" class="col-sm-4 control-label">Reminder preferences</label><div class="col-sm-8"><div class="input-group m-b"><label class="checkbox-inline c-checkbox c-checkbox-rounded"><input id="pref-phone" type="checkbox" value="phone" checked=""/><span class="fa fa-check"></span> Voice Call</label><label class="checkbox-inline c-checkbox c-checkbox-rounded"><input id="pref-text" type="checkbox" value="text" checked=""/><span class="fa fa-check"></span> Text</label><label class="checkbox-inline c-checkbox c-checkbox-rounded"><input id="pref-email" type="checkbox" value="email" checked=""/><span class="fa fa-check"></span> Email</label></div></div></div><div class="form-group"><label for="script" class="col-sm-4 control-label">Script to use</label><div class="col-sm-8"><select id="script" chosen="" ng-model="scripts" ng-options="s for s in scripts" class="chosen-select input-md"></select></div></div><div class="form-group"><label for="reminder-timing" class="col-sm-4 control-label">Reminder timing</label><div class="col-sm-8"><select name="reminder-timing" class="form-control m-b"><option>Option 1</option><option>Option 2</option><option>Option 3</option><option>Option 4</option></select></div></div><div class="form-group"><label for="reminder-timing" class="col-sm-4 control-label">Date/Time</label><div class="col-sm-8"><p class="form-control-static">{{ dateTime }}</p></div></div><div class="form-group"><label for="status" class="col-sm-4 control-label">Status</label><div class="col-sm-8"><p class="form-control-static">{{ status }}</p></div></div><div class="form-group"><label for="recurring" class="col-sm-4 control-label">Recurring</label><div class="col-sm-8"><p class="form-control-static">{{ recurring }}</p></div></div><!--.alert.alert-info--><!--  | Hint: Change the time/duration by dragging the appointment after saving.--><div ng-show="errors" class="alert alert-danger text-center"><div ng-repeat="error in errors track by $index" class="ul"><div class="li">{{error}}</div></div></div><div class="clearfix"><div class="pull-right"><button type="button" ng-click="closeThisDialog('Cancel')" class="btn btn-default mr">Cancel</button><button type="submit" class="btn btn-primary">Save</button></div></div></form></div><!-- END panel--></div></div>
+      <div class="ngdialog-message"><!-- START panel--><div class="panel panel-flat"><div class="panel-heading"><div class="panel-title">Add a new appointment</div></div><div class="panel-body"><form ng-controller="ARScheduleCtrl" role="form" name="appointmentForm" ng-submit="submitForm()" validate-form="" novalidate="" class="form-horizontal mb-lg"><div class="form-group"><label for="name" class="col-sm-4 control-label">Client name</label><div class="col-sm-8"><div ng-controller="ARTypeaheadCtrl" class="typeahead-ctrl"><div class="input-group m-b"><span class="input-group-addon"><span ng-show="!loadingClients" class="fa fa-user"></span><em ng-show="loadingClients" class="fa fa-refresh"></em></span><input id="client-name" type="text" ng-model="client.name" placeholder="Select or create a client" typeahead="client for client in getUsers($viewValue)" typeahead-loading="loadingClients" required="required" typeahead-on-select="onSelect($item, $model, $label)" class="form-control"/></div><!--input#name.form-control(ng-model='client.name', name='name', type='text', required, placeholder='Client name')--></div></div></div><div class="form-group"><label for="phone-home" class="col-sm-4 control-label">Home phone</label><div class="col-sm-8"><div class="input-group m-b"><span class="input-group-addon"><em class="fa fa-phone"></em></span><input id="phone-home" ng-model="client.phone" name="phone-home" type="text" masked="" data-inputmask="'mask': '(99) 9999-9999'" placeholder="Phone number" class="form-control"/></div></div></div><div class="form-group"><label for="mobile" class="col-sm-4 control-label">Mobile</label><div class="col-sm-8"><div class="input-group m-b"><span class="input-group-addon"><em class="icon-screen-smartphone"></em></span><input id="mobile" ng-model="client.mobile" name="mobile" type="text" masked="" data-inputmask="'mask': '(999) 999-9999'" placeholder="Mobile number" class="form-control"/></div></div></div><div class="form-group"><label for="email" class="col-sm-4 control-label">Email</label><div class="col-sm-8"><div class="input-group m-b"><span class="input-group-addon"><em class="icon-envelope"></em></span><input id="email" ng-model="client.email" name="email" type="email" data-parsley-type="email" placeholder="Email" class="form-control"/></div></div></div><div class="form-group"><label for="reminder-preferences" ng-init="appointment = { phone: true, text: true, email: true }" class="col-sm-4 control-label">Reminder preferences</label><div class="col-sm-8"><div class="input-group m-b"><ul class="list-inline"><li><input id="pref-phone" ng-model="appointment.phone" name="phone" type="checkbox" value="phone"/><label for="pref-phone">Call</label></li><li><input id="pref-text" ng-model="appointment.text" name="text" type="checkbox" value="text"/><label for="pref-text">Text</label></li><li><input id="pref-email" ng-model="appointment.email" name="email" type="checkbox" value="email"/><label for="pref-email">Email</label></li></ul></div></div></div><div class="form-group"><label for="script" class="col-sm-4 control-label">Script to use</label><div class="col-sm-8"><select id="script" chosen="" ng-model="scripts" ng-options="s for s in scripts" class="chosen-select input-md"></select></div></div><div class="form-group"><label for="reminder-timing" class="col-sm-4 control-label">Reminder timing</label><div class="col-sm-8"><select name="reminder-timing" class="form-control m-b"><option>Option 1</option><option>Option 2</option><option>Option 3</option><option>Option 4</option></select></div></div><div class="form-group"><label for="reminder-timing" class="col-sm-4 control-label">Date/Time</label><div class="col-sm-8"><p class="form-control-static">{{ appointment.dateTime }}</p></div></div><div class="form-group"><label for="status" class="col-sm-4 control-label">Status</label><div class="col-sm-8"><input id="status" ng-model="appointment.status" name="status" type="text" disabled="" class="form-control"/></div></div><div class="form-group"><label for="recurring" class="col-sm-4 control-label">Recurring</label><div class="col-sm-8"><p class="form-control-static">{{ appointment.recurring }}</p></div></div><!--.alert.alert-info--><!--  | Hint: Change the time/duration by dragging the appointment after saving.--><div ng-show="errors" class="alert alert-danger text-center"><div ng-repeat="error in errors track by $index" class="ul"><div class="li">{{error}}</div></div></div><div class="clearfix"><div class="pull-right"><button type="button" ng-click="closeThisDialog('Cancel')" class="btn btn-default mr">Cancel</button><button type="submit" class="btn btn-primary">Save</button></div></div></form></div><!-- END panel--></div></div>
    </script>
 </div>

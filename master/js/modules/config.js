@@ -2,11 +2,6 @@
  * Module: config.js
  * App routes and resources configuration
  =========================================================*/
-//App.config(['ng-token-auth'], function($authProvider){
-//  $authProvider.configure({
-//      apiUrl: '/api'
-//  });
-//});
 
 App.config([
     '$stateProvider',
@@ -69,7 +64,13 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
       title: 'Schedule',
       templateUrl: basepath('ar-schedule.html'),
       controller: 'ARScheduleCtrl',
-      resolve: resolveFor('jquery-ui', 'moment', 'fullcalendar', 'ngDialog', 'angular-chosen','inputmask','parsley')
+      resolve: resolveFor('jquery-ui', 'moment', 'fullcalendar', 'ngDialog', 'angular-chosen', 'inputmask', 'parsley')
+    })
+    .state('login', {
+      url: '/login',
+      title: "Login",
+      templateUrl: 'app/pages/login.html',
+      resolve: resolveFor('ng-token-auth')
     })
 
 

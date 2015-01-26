@@ -18,6 +18,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/views/ar-schedule.html">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/master/jade/views/ar-schedule.jade">
           <value>
             <set />
@@ -33,12 +38,32 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/master/js/app.init.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/master/js/modules/config.js">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/master/js/modules/controllers/ar-schedule.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/master/js/modules/controllers/ar-typeahead.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/master/js/modules/controllers/datatable.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/master/js/modules/controllers/demo-typeahead.js">
           <value>
             <set />
           </value>
@@ -103,6 +128,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../punters/services-api/config/env/dev.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../punters/services-api/config/env/int.js">
           <value>
             <set />
@@ -133,6 +163,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../punters/services-api/lib/utils/health-check.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../punters/services-api/package.json">
           <value>
             <set />
@@ -144,6 +179,16 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../punters/services-api/test/club_test.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../punters/ui/.tmp/serve/index.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../punters/ui/g">
           <value>
             <set />
           </value>
@@ -163,12 +208,37 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../punters/ui/gulp-tasks/watch.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../punters/ui/gulpfile.js">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../punters/ui/karma.conf.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../punters/ui/package.json">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../punters/ui/src/app/club/club.controller.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../punters/ui/src/app/club/club.controller.spec.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../punters/ui/src/app/club/create.html">
           <value>
             <set />
           </value>
@@ -188,6 +258,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../punters/ui/src/app/styleguide/styleguide.controller.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../punters/ui/src/components/navbar/navbar.controller.js">
           <value>
             <set />
@@ -199,6 +274,16 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../punters/ui/src/components/services/crudRouteProvider.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../punters/ui/src/scripts/env.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../punters/ui/src/scripts/env.local.js">
           <value>
             <set />
           </value>

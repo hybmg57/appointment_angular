@@ -50,8 +50,13 @@ var App = AppInit.run(["$rootScope", "$state", "$stateParams",  '$window', '$tem
           });*/
 
           $rootScope.$on('auth:login-success', function(){
-              console.log('Login success');
-              $state.go('app.dashboard');
+            console.log('Login success');
+            $state.go('app.dashboard');
+          });
+
+          $rootScope.$on('auth:invalid', function(){
+            console.log('errror1');
+            $state.go('page.login');
           });
 
           // Scope Globals
@@ -81,11 +86,6 @@ var App = AppInit.run(["$rootScope", "$state", "$stateParams",  '$window', '$tem
  * Module: config.js
  * App routes and resources configuration
  =========================================================*/
-//App.config(['ng-token-auth'], function($authProvider){
-//  $authProvider.configure({
-//      apiUrl: '/api'
-//  });
-//});
 
 App.config([
     '$stateProvider',
@@ -148,7 +148,13 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
       title: 'Schedule',
       templateUrl: basepath('ar-schedule.html'),
       controller: 'ARScheduleCtrl',
-      resolve: resolveFor('jquery-ui', 'moment', 'fullcalendar', 'ngDialog', 'angular-chosen','inputmask','parsley')
+      resolve: resolveFor('jquery-ui', 'moment', 'fullcalendar', 'ngDialog', 'angular-chosen', 'inputmask', 'parsley')
+    })
+    .state('login', {
+      url: '/login',
+      title: "Login",
+      templateUrl: 'app/pages/login.html',
+      resolve: resolveFor('ng-token-auth')
     })
 
 
@@ -782,43 +788,10 @@ App.controller('RegisterFormController', ['$scope', '$state', '$auth', function(
 
 
 
-App.controller('ARScheduleCtrl', ['$scope', 'ngDialog', function($scope, ngDialog) {
+App.controller('ARScheduleCtrl', ['$scope', 'ngDialog', '$http', function($scope, ngDialog, $http) {
   'use strict';
 
   if(!$.fn.fullCalendar) return;
-
-  // global shared var to know what we are dragging
-  var draggingEvent = null;
-
-
-  /**
-   * ExternalEvent object
-   * @param jQuery Object elements Set of element as jQuery objects
-   */
-  var ExternalEvent = function (elements) {
-      
-      if (!elements) return;
-      
-      elements.each(function() {
-          var $this = $(this);
-          // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
-          // it doesn't need to have a start or end
-          var calendarEventObject = {
-              title: $.trim($this.text()) // use the element's text as the event title
-          };
-
-          // store the Event Object in the DOM element so we can get to it later
-          $this.data('calendarEventObject', calendarEventObject);
-
-          // make the event draggable using jQuery UI
-          $this.draggable({
-              zIndex: 1070,
-              revert: true, // will cause the event to go back to its
-              revertDuration: 0  //  original position after the drag
-          });
-
-      });
-  };
 
   /**
    * Invoke full calendar plugin and attach behavior
@@ -877,9 +850,6 @@ App.controller('ARScheduleCtrl', ['$scope', 'ngDialog', function($scope, ngDialo
                 $this.remove();
               }
           },
-          eventDragStart: function (event, js, ui) {
-            draggingEvent = event;
-          },
           // This array is the events sources
           events: events,
           defaultView: "agendaWeek",
@@ -900,85 +870,6 @@ App.controller('ARScheduleCtrl', ['$scope', 'ngDialog', function($scope, ngDialo
             $('#calendar').fullCalendar('unselect');
           }
       });
-  }
-
-  /**
-   * Inits the external events panel
-   * @param  jQuery [calElement] The calendar dom element wrapped into jQuery
-   */
-  function initExternalEvents(calElement){
-    // Panel with the external events list
-    var externalEvents = $('.external-events');
-
-    // init the external events in the panel
-    new ExternalEvent(externalEvents.children('div'));
-
-    // External event color is danger-red by default
-    var currColor = '#f6504d';
-    // Color selector button
-    var eventAddBtn = $('.external-event-add-btn');
-    // New external event name input
-    var eventNameInput = $('.external-event-name');
-    // Color switchers
-    var eventColorSelector = $('.external-event-color-selector .circle');
-
-    // Trash events Droparea 
-    $('.external-events-trash').droppable({
-      accept:       '.fc-event',
-      activeClass:  'active',
-      hoverClass:   'hovered',
-      tolerance:    'touch',
-      drop: function(event, ui) {
-        
-        // You can use this function to send an ajax request
-        // to remove the event from the repository
-        
-        if(draggingEvent) {
-          var eid = draggingEvent.id || draggingEvent._id;
-          // Remove the event
-          calElement.fullCalendar('removeEvents', eid);
-          // Remove the dom element
-          ui.draggable.remove();
-          // clear
-          draggingEvent = null;
-        }
-      }
-    });
-
-    eventColorSelector.click(function(e) {
-        e.preventDefault();
-        var $this = $(this);
-
-        // Save color
-        currColor = $this.css('background-color');
-        // De-select all and select the current one
-        eventColorSelector.removeClass('selected');
-        $this.addClass('selected');
-    });
-
-    eventAddBtn.click(function(e) {
-        e.preventDefault();
-        
-        // Get event name from input
-        var val = eventNameInput.val();
-        // Dont allow empty values
-        if ($.trim(val) === '') return;
-        
-        // Create new event element
-        var newEvent = $('<div/>').css({
-                            'background-color': currColor,
-                            'border-color':     currColor,
-                            'color':            '#fff'
-                        })
-                        .html(val);
-
-        // Prepends to the external events list
-        externalEvents.prepend(newEvent);
-        // Initialize the new event element
-        new ExternalEvent(newEvent);
-        // Clear input
-        eventNameInput.val('');
-    });
   }
 
   /**
@@ -1078,8 +969,17 @@ App.controller('ARScheduleCtrl', ['$scope', 'ngDialog', function($scope, ngDialo
     $scope.format = $scope.formats[0];
   }
 
-  $scope.submit = function ($scope) {
-    $scope.confim('save');
+
+  $scope.submitForm = function () {
+    var formData = {
+      appointment: $scope.appointment
+    };
+    console.log(formData);
+
+    $http.post('/api/appointment', JSON.stringify(formData))
+      .success(function (data, status, headers) {
+        console.log(data);
+      });
   };
 
   // When dom ready, init calendar and events
@@ -1090,8 +990,6 @@ App.controller('ARScheduleCtrl', ['$scope', 'ngDialog', function($scope, ngDialo
 
     var demoEvents = createDemoEvents();
 
-    initExternalEvents(calendar);
-
     initCalendar(calendar, demoEvents);
     inlineCalendar();
 
@@ -1100,14 +998,13 @@ App.controller('ARScheduleCtrl', ['$scope', 'ngDialog', function($scope, ngDialo
       calendar.fullCalendar('gotoDate', dt);
     };
 
-    $scope.scripts = [
-      'Hello World',
-      'Hi Hello',
-      'Jae Choi'
-    ];
-    $scope.dateTime = new Date();
-    $scope.status = 'Scheduled';
-    $scope.recurring = 'One-off';
+    $scope.appointment = {
+      scripts:   ['Hello', 'World', 'Jae'],
+      dateTime:  new Date().toString(),
+      status:    'Scheduled',
+      recurring: 'One-off'
+    };
+
   });
 
 
@@ -1142,6 +1039,35 @@ App.controller('ARScheduleCtrl', ['$scope', 'ngDialog', function($scope, ngDialo
   };
 
 }]);
+/**=========================================================
+ * Module: ar-typeahead.js
+ * Provides typeahead feature to templates
+ =========================================================*/
+
+App.controller('ARTypeaheadCtrl', ['$scope', '$http', function ($scope, $http) {
+
+  // Any function returning a promise object can be used to load values asynchronously
+  $scope.getUsers = function(val) {
+    return $http.get('/api/clients.json', {
+      params: {
+        users: val
+      }
+    }).then(function(response){
+      return response.data.map(function(item){
+        return item.email;
+      });
+    });
+  };
+
+  $scope.onSelect = function ($item, $model, $label) {
+    console.log($item);
+    $scope.$item = $item;
+    $scope.$model = $model;
+    $scope.$label = $label;
+  };
+
+}]);
+
 /**=========================================================
  * Module: calendar-ui.js
  * This script handle the calendar demo with draggable 
@@ -1452,7 +1378,7 @@ App.controller('DataTableController', ['$scope', '$timeout', function($scope, $t
             sSearch:      'Search all columns:',
             sLengthMenu:  '_MENU_ records per page',
             info:         'Showing page _PAGE_ of _PAGES_',
-            zeroRecords:  'Nothing found - sorry',
+            zeroRecords:  'Nothing found -sorry',
             infoEmpty:    'No records available',
             infoFiltered: '(filtered from _MAX_ total records)'
         }
